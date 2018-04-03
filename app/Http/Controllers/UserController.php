@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Model\Followers;
 use Illuminate\Support\Facades\Storage;
 use Exception;
 use Illuminate\Support\Facades\Input;
@@ -13,10 +14,13 @@ class UserController extends Controller
 
 
   protected $user;
-  public function __construct(User $user)
+  protected $followers;
+  public function __construct(User $user, Followers $followers)
   {
     $this->user = $user;
+    $this->followers = $followers;
   }
+
   public function all()
   {
       $users = $this->user->all();
@@ -44,7 +48,7 @@ class UserController extends Controller
           }
       }
       catch (\Exception $e) {
-        return response('Failed', 401);
+        return response()->json(['success'=> false, 'error'=> $ex]);
       }
     }
       $query = $this->user->find(auth()->user()->id);
@@ -52,15 +56,62 @@ class UserController extends Controller
       $query->bio = $request->bio;
     try{
       $update =  $query->save();
-      return response("Updated",201);
+      return response()->json(['success'=> true, 'error'=> "Successfully updated user profile."]);
     }
     catch(Exception $ex)
     {
       return $ex;
-      return response("Failed",400);
+      return response()->json(['success'=> false, 'error'=> $ex]);
     }
   }
 
+  public function countFollowings()
+  {
+    try {
+      $id = auth()->user()->id;
+      $list = $this->followers->select('followed_id')->where('follower_id','=',$id)->get();
+      $count = count($list);
+      return response()->json($count,200);
+      }
+    catch (Exception $e) {
+      return response()->json(['success'=> false, 'error'=> $e]);
+    }
+  }
 
+  public function countFollowers()
+  {
+    try {
+      $id = auth()->user()->id;
+      $list = $this->followers->select('follower_id')->where('followed_id','=',$id)->get();
+      $count = count($list);
+      return response()->json($count,200);
+      }
+    catch (Exception $e) {
+      return response()->json(['success'=> false, 'error'=> $e]);
+    }
+  }
+
+  public function viewMyFollowings()
+  {
+    try {
+      $id = auth()->user()->id;
+      $list = $this->followers->select('followed_id')->where('follower_id','=',$id)->get();
+      return response()->json($list,200);
+      }
+    catch (Exception $e) {
+      return response()->json(['success'=> false, 'error'=> $e]);
+    }
+  }
+  public function viewMyFollowers()
+  {
+    try {
+      $id = auth()->user()->id;
+      $list = $this->followers->select('follower_id')->where('followed_id','=',$id)->get();
+      return response()->json($list,200);
+      }
+    catch (Exception $e) {
+      return response()->json(['success'=> false, 'error'=> $e]);
+    }
+  }
 
 }

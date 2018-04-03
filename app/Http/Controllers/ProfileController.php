@@ -18,11 +18,11 @@ class ProfileController extends Controller
         $user = User::find($profileId);
         if(! $user) {
           //return redirect()->back()->with('error', 'User does not exist.');
-          return "User does not exist";
+          return response()->json(['success'=> false, 'error'=> "User does not exist."]);
         }
         $user->followers()->attach(auth()->user()->id);
         //return redirect()->back()->with('success', 'Successfully followed the user.');
-        return 'Successfully followed the user';
+        return response()->json(['success'=> true, 'error'=> "Successfully followed the user."]);
     }
 
     public function unFollowUser(int $profileId)
@@ -31,10 +31,10 @@ class ProfileController extends Controller
         if(! $user)
           {
             //return redirect()->back()->with('error', 'User does not exist.');
-            return "User does not exist.";
+            return response()->json(['success'=> false, 'error'=> "User does not exist."]);
           }
         $user->followers()->detach(auth()->user()->id);
           //return redirect()->back()->with('success', 'Successfully unfollowed the user.');
-          return "Successfully unfollowed the user.";
+          return response()->json(['success'=> true, 'error'=> "Successfully unfollowed the user."]);
     }
 }

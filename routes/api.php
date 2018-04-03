@@ -35,4 +35,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::post('/{profileId}/unfollow', 'ProfileController@unFollowUser')->name('user.unfollow');
 
     Route::post('update','UserController@update');
+    Route::get('viewMyFollowings','UserController@viewMyFollowings');
+    Route::get('viewMyFollowers','UserController@viewMyFollowers');
+    Route::get('countFollowings','UserController@countFollowings');
+    Route::get('countFollowers','UserController@countFollowers');
 });
