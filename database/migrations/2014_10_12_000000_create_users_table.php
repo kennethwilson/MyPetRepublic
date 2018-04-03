@@ -18,13 +18,13 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->string('displaypic',255)->default("default.jpg");
+            $table->string('bio',255)->default("");
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
      *
      * @return void
      */

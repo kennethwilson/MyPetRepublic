@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -14,9 +15,9 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password','is_verified'
-    ];
+
+    protected $fillable = ['password','email','name','is_verified','displaypic','bio'];
+    public $timestamps = false;
     public function getJWTIdentifier()
    {
        return $this->getKey();
@@ -33,4 +34,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+      public function followers()
+      {
+        return $this->belongsToMany(User::class, 'followers', 'followed_id', 'follower_id')->withTimestamps();
+      }
+
+      public function followings()
+      {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'followed  _id')->withTimestamps();
+      }
 }
