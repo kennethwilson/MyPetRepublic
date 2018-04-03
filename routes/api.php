@@ -14,11 +14,9 @@ use Illuminate\Http\Request;
 */
 
 Route::get('user/verify/{verification_code}', 'AuthController@verifyUser');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.request');
-Route::post('password/reset', 'Auth\ResetPasswordController@postReset')->name('password.reset');
+Route::get('password/reset', 'Auth\ResetPasswordController@postReset')->name('password.reset');
 Route::post('register','AuthController@register');
 Route::post('login','AuthController@login');
-Route::get('logout','AuthController@logout');
 Route::post('recoverpass','AuthController@recover');
 
 

@@ -20,11 +20,12 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('displaypic',255)->default("default.jpg");
             $table->string('bio',255)->default("");
+            $table->rememberToken();
         });
     }
 
     /**
-     * Reverse the migrations.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+     * Reverse the migrations.
      *
      * @return void
      */
