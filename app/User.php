@@ -4,8 +4,10 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use App\Model\Doggie;
+use Illuminate\Database\Eloquent\Model;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -19,9 +21,9 @@ class User extends Authenticatable
     protected $fillable = ['password','email','name','is_verified','displaypic','bio'];
     public $timestamps = false;
     public function getJWTIdentifier()
-   {
+    {
        return $this->getKey();
-   }
+    }
    public function getJWTCustomClaims()
    {
        return [];
@@ -42,5 +44,9 @@ class User extends Authenticatable
       public function followings()
       {
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'followed  _id')->withTimestamps();
+      }
+      public function doggies()
+      {
+        return $this->hasMany(Doggie::class,'owner_id','id');
       }
 }

@@ -63,7 +63,7 @@ class AuthController extends Controller
                 'message'=> 'You have successfully verified your email address.'
             ]);
         }
-        return response()->json(['success'=> false, 'error'=> "Verification code is invalid."]);
+        return response()->json(['success'=> false, 'error'=> "Verification code is invalid."],422);
     }
 
 
@@ -77,7 +77,7 @@ class AuthController extends Controller
         ];
         $validator = Validator::make($credentials, $rules);
         if($validator->fails()) {
-            return response()->json(['success'=> false, 'error'=> $validator->messages()]);
+            return response()->json(['success'=> false, 'error'=> $validator->messages()],422);
         }
 
         $credentials['is_verified'] = 1;

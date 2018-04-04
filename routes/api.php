@@ -19,8 +19,6 @@ Route::post('register','AuthController@register');
 Route::post('login','AuthController@login');
 Route::post('recoverpass','AuthController@recover');
 
-
-
 Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('logout', 'AuthController@logout');
     Route::get('test', function(){
@@ -37,4 +35,9 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('viewMyFollowers','UserController@viewMyFollowers');
     Route::get('countFollowings','UserController@countFollowings');
     Route::get('countFollowers','UserController@countFollowers');
+    Route::post('addDoggie','UserController@addDoggie');
+    Route::get('viewAllDoggie','UserController@viewAllDoggie');
+    Route::delete('delete/{doggieID}','UserController@deleteDoggie');
+    Route::post('update/{doggieID}','UserController@updateDoggie');
+    Route::get('getName','UserController@getName');
 });

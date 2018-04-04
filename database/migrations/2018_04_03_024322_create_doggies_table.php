@@ -15,16 +15,18 @@ class CreateDoggiesTable extends Migration
     {
         Schema::create('doggies', function (Blueprint $table) {
             $table->increments('id');
-            
+            $table->string('name',255);
+            $table->integer('age')->unsigned();
+            $table->string('desc',255);
+            $table->string('breed',50);
+            $table->Integer('owner_id');
+            $table->foreign('owner_id')
+              ->references('id')->on('users')
+              ->onDelete('cascade');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('doggies');
