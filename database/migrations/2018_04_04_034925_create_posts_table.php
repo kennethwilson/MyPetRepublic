@@ -21,9 +21,9 @@ class CreatePostsTable extends Migration
               ->references('id')->on('doggies')
               ->onDelete('cascade');
 
-            $table->string('pic',255)->default("");
-            $table->mediumText('caption');
-            $table->string('location');
+            $table->string('pic',255)->nullable();
+            $table->mediumText('caption')->nullable();
+            $table->string('location')->nullable();
             $table->timestamps();
         });
     }

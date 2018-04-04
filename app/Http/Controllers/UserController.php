@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Model\Followers;
 use App\Model\Doggie;
+use App\Model\Posts;
 use Illuminate\Support\Facades\Storage;
 use Exception;
 use Illuminate\Support\Facades\Input;
@@ -15,12 +16,13 @@ class UserController extends Controller
   protected $doggie;
   protected $user;
   protected $followers;
-
-  public function __construct(User $user, Followers $followers, Doggie $doggie)
+  protected $posts;
+  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts)
   {
     $this->user = $user;
     $this->followers = $followers;
     $this->doggie = $doggie;
+    $this->posts = $posts;
   }
 
   public function all()
@@ -30,8 +32,7 @@ class UserController extends Controller
   }
   public function getName()
   {
-    $query = $this->user->find(auth()->user()->id);
-    return response()->json($query->name);
+    return response()->json(auth()->user()->name);
   }
   public function update(Request $request)
   {
@@ -150,7 +151,11 @@ class UserController extends Controller
       $doggies  = $this->user->with('doggies')->get();
       return response()->json($doggies,200);
   }
-
+  public function viewAllMyDoggie()
+  {
+    $doggies = $this->user->with('doggies')->find(auth()->user()->id);
+    return response()->json($doggies);
+  }
   public function deleteDoggie($doggieID)
   {
     try{

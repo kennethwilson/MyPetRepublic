@@ -37,7 +37,14 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('countFollowers','UserController@countFollowers');
     Route::post('addDoggie','UserController@addDoggie');
     Route::get('viewAllDoggie','UserController@viewAllDoggie');
+    Route::get('viewAllMyDoggie','UserController@viewAllMyDoggie');
     Route::delete('delete/{doggieID}','UserController@deleteDoggie');
     Route::post('update/{doggieID}','UserController@updateDoggie');
     Route::get('getName','UserController@getName');
+
+
+    Route::post('/post/{dog_id}','PostsController@post');
+    Route::delete('deletePost/{post_id}','PostsController@deletePost');
+    Route::get('viewAllPosts/{dog_id}','PostsController@viewAllPosts');
+    Route::get('viewPost/{post_id}','PostsController@viewPost');
 });
