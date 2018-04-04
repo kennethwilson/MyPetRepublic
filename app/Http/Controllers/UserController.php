@@ -55,7 +55,7 @@ class UserController extends Controller
             Storage::delete('public/images/'.$original_dp);
           }
       }
-      catch (\Exception $e) {
+      catch (Exception $e) {
         return response()->json(['success'=> false, 'error'=> $ex],422);
       }
     }
@@ -68,7 +68,6 @@ class UserController extends Controller
     }
     catch(Exception $ex)
     {
-      return $ex;
       return response()->json(['success'=> false, 'error'=> $ex]);
     }
   }

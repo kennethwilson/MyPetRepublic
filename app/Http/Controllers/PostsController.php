@@ -107,7 +107,27 @@ class PostsController extends Controller
     }
   }
 
+  public function updatePost(Request $request, $post_id)
+  {
+    $query = $this->posts->find($post_id);
 
+    $query->caption = $request->caption;
+    $query->location = $request->location;
 
+    try {
+      if( ($query->caption=="") && ($query->pic=="")  )
+      {
+        return response()->json(['success'=> false, 'error'=> "Update failed. Post will be empty!!"]);
+      }
+      else {
+        $update =  $query->save();
+        return response()->json(['success'=> true, 'message'=> $query->pic]);
+      }
+    } catch (Exception $e) {
+      return response()->json(['success'=> false, 'error'=> $e]);
+    }
+  }
+
+  
 
 }
