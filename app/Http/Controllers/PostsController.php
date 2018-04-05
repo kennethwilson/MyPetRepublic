@@ -121,13 +121,13 @@ class PostsController extends Controller
       }
       else {
         $update =  $query->save();
-        return response()->json(['success'=> true, 'message'=> $query->pic]);
+        return response()->json(['success'=> true, 'message'=> "Post Updated!"]);
       }
     } catch (Exception $e) {
       return response()->json(['success'=> false, 'error'=> $e]);
     }
   }
 
-  
+
 
 }

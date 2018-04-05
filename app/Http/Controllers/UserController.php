@@ -32,7 +32,7 @@ class UserController extends Controller
   }
   public function getName()
   {
-    return response()->json(auth()->user()->name);
+    return response()->json("name"=>auth()->user()->name);
   }
   public function update(Request $request)
   {

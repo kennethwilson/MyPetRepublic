@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use App\Model\Doggie;
+use App\Model\Posts;
 use Illuminate\Database\Eloquent\Model;
 class User extends Authenticatable
 {
@@ -38,15 +39,16 @@ class User extends Authenticatable
     ];
       public function followers()
       {
-        return $this->belongsToMany(User::class, 'followers', 'followed_id', 'follower_id')->withTimestamps();
+        return $this->hasMany(User::class, 'followers', 'followed_id', 'follower_id')->withTimestamps();
       }
 
       public function followings()
       {
-        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'followed  _id')->withTimestamps();
+        return $this->hasMany(User::class, 'followers', 'follower_id', 'followed  _id')->withTimestamps();
       }
       public function doggies()
       {
         return $this->hasMany(Doggie::class,'owner_id','id');
       }
+
 }
