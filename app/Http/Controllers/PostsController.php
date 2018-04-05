@@ -7,6 +7,7 @@ use App\User;
 use App\Model\Followers;
 use App\Model\Doggie;
 use App\Model\Posts;
+use App\Model\Likes;
 use Illuminate\Support\Facades\Storage;
 use Exception;
 use Illuminate\Support\Facades\Input;
@@ -16,12 +17,13 @@ class PostsController extends Controller
   protected $user;
   protected $followers;
   protected $posts;
-  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts)
+  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts, Likes $likes)
   {
     $this->user = $user;
     $this->followers = $followers;
     $this->doggie = $doggie;
     $this->posts = $posts;
+    $this->likes  = $likes;
   }
   public function post(Request $request,$dog_id)
   {
@@ -128,6 +130,11 @@ class PostsController extends Controller
     }
   }
 
+  public function likeCount($post_id)
+  {
+    $query = $this->likes->where('post_id','=',$post_id)->get();
+    return response()->json(['likes'=>count($query)]);
+  }
 
 
 }

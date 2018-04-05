@@ -7,6 +7,7 @@ use App\User;
 use App\Model\Followers;
 use App\Model\Doggie;
 use App\Model\Posts;
+use App\Model\Likes;
 use Illuminate\Support\Facades\Storage;
 use Exception;
 use Illuminate\Support\Facades\Input;
@@ -17,12 +18,13 @@ class UserController extends Controller
   protected $user;
   protected $followers;
   protected $posts;
-  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts)
+  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts, Likes $likes)
   {
     $this->user = $user;
     $this->followers = $followers;
     $this->doggie = $doggie;
     $this->posts = $posts;
+    $this->likes = $likes;
   }
 
   public function all()
@@ -32,7 +34,7 @@ class UserController extends Controller
   }
   public function getName()
   {
-    return response()->json("name"=>auth()->user()->name);
+    return response()->json(["name"=>auth()->user()->name]);
   }
   public function update(Request $request)
   {
@@ -189,5 +191,24 @@ class UserController extends Controller
       return response()->json(['success'=> false, 'error'=> $ex]);
     }
   }
+
+  public function likePost($post_id)
+  {
+    $like = [
+      "user_id"   => auth()->user()->id,
+      "post_id"    => $post_id
+    ];
+    $add= $this->likes->create($like);
+    return response()->json(['success'=> true, 'message'=> "Successfully liked the post!!"]);
+  }
+
+  public function unlikePost($post_id)
+  {
+      $query = $this->likes->where([ ['user_id','=',auth()->user()->id],['post_id','=',$post_id] ])->delete();
+      return response()->json(['success'=> true, 'message'=> "Successfully unliked the post."]);
+  }
+
+  
+
 
 }

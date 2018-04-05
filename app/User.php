@@ -39,12 +39,12 @@ class User extends Authenticatable
     ];
       public function followers()
       {
-        return $this->hasMany(User::class, 'followers', 'followed_id', 'follower_id')->withTimestamps();
+        return $this->hasMany(User::class, 'followers', 'followed_id', 'follower_id');
       }
 
       public function followings()
       {
-        return $this->hasMany(User::class, 'followers', 'follower_id', 'followed  _id')->withTimestamps();
+        return $this->hasMany(User::class, 'followers', 'follower_id', 'followed_id');
       }
       public function doggies()
       {

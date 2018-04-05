@@ -35,7 +35,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('viewMyFollowers','UserController@viewMyFollowers');
     Route::get('countFollowings','UserController@countFollowings');
     Route::get('countFollowers','UserController@countFollowers');
-    
+
     Route::post('addDoggie','UserController@addDoggie');
     Route::get('viewAllDoggie','UserController@viewAllDoggie');
     Route::get('viewAllMyDoggie','UserController@viewAllMyDoggie');
@@ -49,4 +49,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('viewAllPosts/{dog_id}','PostsController@viewAllPosts');
     Route::get('viewPost/{post_id}','PostsController@viewPost');
     Route::post('updatePost/{post_id}','PostsController@updatePost');
+    Route::get('likeCount/{post_id}','PostsController@likeCount');
+
+    Route::get('likePost/{post_id}','UserController@likePost');
+    Route::get('unlikePost/{post_id}','UserController@unlikePost');
 });
