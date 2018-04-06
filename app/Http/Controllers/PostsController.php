@@ -136,5 +136,7 @@ class PostsController extends Controller
     return response()->json(['likes'=>count($query)]);
   }
 
+  
+
 
 }

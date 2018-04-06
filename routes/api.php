@@ -53,4 +53,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::get('likePost/{post_id}','UserController@likePost');
     Route::get('unlikePost/{post_id}','UserController@unlikePost');
+    Route::get('is_post_liked/{post_id}','UserController@post_is_liked');
+
+    Route::post('comment_post/{post_id}','UserController@comment_post');
+    Route::delete('delete_comment/{comment_id}','UserController@delete_comment');
 });

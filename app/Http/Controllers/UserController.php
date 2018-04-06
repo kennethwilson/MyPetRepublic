@@ -8,6 +8,7 @@ use App\Model\Followers;
 use App\Model\Doggie;
 use App\Model\Posts;
 use App\Model\Likes;
+use App\Model\Comments;
 use Illuminate\Support\Facades\Storage;
 use Exception;
 use Illuminate\Support\Facades\Input;
@@ -18,13 +19,14 @@ class UserController extends Controller
   protected $user;
   protected $followers;
   protected $posts;
-  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts, Likes $likes)
+  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts, Likes $likes, Comments $comments)
   {
     $this->user = $user;
     $this->followers = $followers;
     $this->doggie = $doggie;
     $this->posts = $posts;
     $this->likes = $likes;
+    $this->comments = $comments;
   }
 
   public function all()
@@ -208,7 +210,66 @@ class UserController extends Controller
       return response()->json(['success'=> true, 'message'=> "Successfully unliked the post."]);
   }
 
-  
+  public function post_is_liked($post_id)  //to check if user has already liked post
+  {
+      $query = $this->likes->where([ ['user_id','=',auth()->user()->id],['post_id','=',$post_id] ])->get();
+      if(count($query)!=0)
+      {
+        return response()->json(['is_post_liked?'=> 'yes']);
+      }
+      else {
+        return response()->json(['is_post_liked'=>'no']);
+      }
+  }
 
+  public function comment_post(Request $request, $post_id)
+  {
+      $comment = $request->comment;
+      // if($comment=="")               NOT NEEDED
+      // {                              soalnya di frontend bsa validate kalo textbox kosong gbsa send commentnya
+      //   return response()->json(['success'=> false, 'error'=> 'Comment is empty']);
+      // }
+      $comment = [
+        "user_id"  => auth()->user()->id,
+        "post_id"  => $post_id,
+        'comment'  => $comment
+      ];
+      try {
+        $add= $this->comments->create($comment);
+        return response()->json(['success'=> true, 'message'=> "Comment successfully sent!!"]);
+      } catch (\Exception $e) {
+        return response()->json(['success'=> false, 'error'=> $e]);
+      }
+  }
+      public function delete_comment($comment_id)
+      {
+        try {
+          $query = $this->comments->where('id',"=",$comment_id)->first();
+          $post = $query->post_id;
+          $search_post = $this->posts->where('id',"=",$post)->first();
+          $dog = $search_post->dog_id;
 
+          $search_user = $this->doggie->where('id',"=",$dog)->first();
+          $user = $search_user->owner_id;
+
+          if($query->user_id == auth()->user()->id)    //check if it is the user's comment
+          {
+            $del =  $this->comments->where('id',"=",$comment_id)->delete();
+            return response()->json(['success'=> true, 'message'=> "Comment Successfully Deleted!!"]);
+          }
+          elseif($user == auth()->user()->id) //check if it is the user's post (in this case, user can delete all its posts' comments)
+          {
+            $query = $this->comments->where('id',"=",$comment_id)->delete();
+            return response()->json(['success'=> true, 'message'=> "Comment Successfully Deleted!!"]);
+          }
+
+          else {
+            return response()->json(['success'=> false, 'error'=> "You cannot delete this comment"]);
+          }
+
+        } catch (\Exception $e) {
+            return response()->json(['success'=> false, 'error'=> $e]);
+        }
+
+      }
 }
