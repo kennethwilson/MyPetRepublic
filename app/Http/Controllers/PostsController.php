@@ -40,29 +40,33 @@ class PostsController extends Controller
       $fileName = rand(11111,99999).'.'.$extension; // renaming image
       Input::file('pic')->move($destinationPath, $fileName);
 
-          $post = [
-            "caption"   => $caption,
-            "location"    => $location,
-            "dog_id" => $dog_id,
-            "pic"  => $fileName
-          ];
+          // $post = [
+          //   "caption"   => $caption,
+          //   "location"    => $location,
+          //   "dog_id" => $dog_id,
+          //   "pic"  => $fileName
+          // ];
+      $post = new Posts;
+      $post->caption = $caption;
+      $post->location = $location;
+      $post->dog_id = $dog_id;
+      $post->pic = $filename;
 
       try {
-        $add= $this->posts->create($post);
+        $post->save();
           return response()->json(['success'=> true, 'message'=> "Successfully posted!!"]);
       }
       catch (Exception $e) {
-        return response()->json(['success'=> false, 'error'=> $caption.$location.$dog_id.$fileName]);
+        return response()->json(['success'=> false, 'error'=> $e]);
       }
     }
     else {
-      $post = [
-        "caption"   => $caption,
-        "location"  => $location,
-        "dog_id" => $dog_id,
-      ];
+      $post = new Posts;
+      $post->caption = $caption;
+      $post->location = $location;
+      $post->dog_id = $dog_id;
       try {
-        $add= $this->posts->create($post);
+          $post->save();
           return response()->json(['success'=> true, 'message'=> "Successfully posted!!"]);
       }
       catch (Exception $e) {
@@ -136,7 +140,7 @@ class PostsController extends Controller
     return response()->json(['likes'=>count($query)]);
   }
 
-  
+
 
 
 }

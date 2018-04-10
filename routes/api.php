@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('user/verify/{verification_code}', 'AuthController@verifyUser');
+
 Route::get('password/reset', 'Auth\ResetPasswordController@postReset')->name('password.reset');
 Route::post('register','AuthController@register');
 Route::post('login','AuthController@login');

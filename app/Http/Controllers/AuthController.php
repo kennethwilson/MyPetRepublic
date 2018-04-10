@@ -17,23 +17,32 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $credentials = $request->only('name', 'email', 'password');
+        $credentials = $request->only('name', 'email', 'password','username');
 
         $rules = [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users'
+            'email' => 'required|email|max:255|unique:users',
+            'username' => 'required|max:100'
         ];
         $validator = Validator::make($credentials, $rules);
         if($validator->fails()) {
             return response()->json(['success'=> false, 'error'=> $validator->messages()],422);
         }
-
+        $username = $request->username;
         $name = $request->name;
-               $email = $request->email;
-               $password = $request->password;
+        $email = $request->email;
+        $password = $request->password;
 
-               $user = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
+        $user = new User;
+        $user->username = $username;
+        $user->name = $name;
+        $user->email = $email;
+        $user->password = Hash::make($password);
+        $user->save();
+
+               //$user = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
                $verification_code = str_random(30); //Generate verification code
+
                DB::table('user_verifications')->insert(['user_id'=>$user->id,'token'=>$verification_code]);
                $subject = "Please verify your email address.";
                Mail::send('verify', ['name' => $name, 'verification_code' => $verification_code],

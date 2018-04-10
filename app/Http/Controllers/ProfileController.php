@@ -20,11 +20,14 @@ class ProfileController extends Controller
         if(! $user) {
           return response()->json(['success'=> false, 'error'=> "User does not exist."]);
         }
-        $follow = [
-          "follower_id"   => auth()->user()->id,
-          "followed_id"    => $profileId
-        ];
-        $add= $this->followers->create($follow);
+        // $follow = [
+        //   "follower_id"   => auth()->user()->id,
+        //   "followed_id"    => $profileId
+        // ];
+        $follow = new Followers;
+        $follow->follower_id = auth()->user()->id;
+        $follow->followed_id = $profileId;
+        $follow->save();
         return response()->json(['success'=> true, 'message'=> "Successfully followed the user."]);
     }
 

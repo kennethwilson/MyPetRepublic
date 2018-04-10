@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Exception;
 use Illuminate\Support\Facades\Input;
 
+
 class UserController extends Controller
 {
   protected $doggie;
@@ -41,26 +42,22 @@ class UserController extends Controller
   public function update(Request $request)
   {
     if ($request->hasFile('displaypic')) {
-      $file = array('displaypic' => Input::file('displaypic'));
       $destinationPath = 'storage/images'; // upload path
       $extension = Input::file('displaypic')->getClientOriginalExtension();
-      $fileName = rand(11111,99999).'.'.$extension; // renaming image
-      Input::file('displaypic')->move($destinationPath, $fileName);
+      $folder = rand(11111,99999); // renaming image
+    //  Input::file('displaypic')->move($destinationPath, $fileName);
+
+      //insert image into digital ocean DO_SPACES_SECRET
+      Storage::disk('spaces')->putFile($folder, Input::file('displaypic'),'public');
+
       try {
         $query = $this->user->find(auth()->user()->id);
         $original_dp = $query->displaypic;
-        $query->displaypic = $fileName;
+        $query->displaypic = $folder;
         $query->save();
-        //  echo("<img src='{{ asset($query->displaypic) }}'/>");
-        echo "$original_dp";
-          if($original_dp != "default.jpg")
-          {
-            echo("hello");
-            Storage::delete('public/images/'.$original_dp);
-          }
       }
       catch (Exception $e) {
-        return response()->json(['success'=> false, 'error'=> $ex],422);
+        return response()->json(['success'=> false, 'error'=> $e],422);
       }
     }
       $query = $this->user->find(auth()->user()->id);
@@ -132,15 +129,22 @@ class UserController extends Controller
       $desc = $request ->desc;
       $breed = $request ->breed;
 
-      $doggie = [
-        "name"   => $name,
-        "age"    => $age,
-        "desc"   => $desc,
-        "breed"  => $breed,
-        "owner_id" => auth()->user()->id
-      ];
+      // $doggie = [
+      //   "name"   => $name,
+      //   "age"    => $age,
+      //   "desc"   => $desc,
+      //   "breed"  => $breed,
+      //   "owner_id" => auth()->user()->id
+      // ];
+
+      $doggie = new Doggie;
+      $doggie->name = $name;
+      $doggie->age = $age;
+      $doggie->desc = $desc;
+      $doggie->breed = $breed;
+      $doggie->owner_id = auth()->user()->id;
       try{
-        $add= $this->doggie->create($doggie);
+        $doggie->save();
           return response()->json(['success'=> true, 'message'=> "Doggie Successfully Added!!"]);
       }
       catch(Exception $ex)
@@ -196,11 +200,14 @@ class UserController extends Controller
 
   public function likePost($post_id)
   {
-    $like = [
-      "user_id"   => auth()->user()->id,
-      "post_id"    => $post_id
-    ];
-    $add= $this->likes->create($like);
+    // $like = [
+    //   "user_id"   => auth()->user()->id,
+    //   "post_id"    => $post_id
+    // ];
+    $like = new Likes;
+    $like->user_id = auth()->user()->id;
+    $like->post_id = $post_id;
+    $like->save();
     return response()->json(['success'=> true, 'message'=> "Successfully liked the post!!"]);
   }
 
@@ -229,13 +236,19 @@ class UserController extends Controller
       // {                              soalnya di frontend bsa validate kalo textbox kosong gbsa send commentnya
       //   return response()->json(['success'=> false, 'error'=> 'Comment is empty']);
       // }
-      $comment = [
-        "user_id"  => auth()->user()->id,
-        "post_id"  => $post_id,
-        'comment'  => $comment
-      ];
+      // $comment = [                                 mass assignment
+      //   "user_id"  => auth()->user()->id,          gabsa synchronize sma algolia
+      //   "post_id"  => $post_id,
+      //   'comment'  => $comment
+      // ];
+      //jdi hrus:
+      $comments = new Comments;
+      $comments->user_id = auth()->user()->id;
+      $comments->post_id = $post_id;
+      $comments->comment = $comment;
+
       try {
-        $add= $this->comments->create($comment);
+        $comments->save();
         return response()->json(['success'=> true, 'message'=> "Comment successfully sent!!"]);
       } catch (\Exception $e) {
         return response()->json(['success'=> false, 'error'=> $e]);
