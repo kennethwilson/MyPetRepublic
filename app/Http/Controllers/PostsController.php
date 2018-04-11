@@ -50,7 +50,7 @@ class PostsController extends Controller
       $post->caption = $caption;
       $post->location = $location;
       $post->dog_id = $dog_id;
-      $post->pic = $filename;
+      $post->pic = $fileName;
 
       try {
         $post->save();
@@ -75,10 +75,12 @@ class PostsController extends Controller
     }
   }
 
-  public function deletePost($post_id)
+  public function deletePost($post_id) //kurang delete pic dri storage/public
   {
     try{
-      $doggie = $this->posts->where('id',$post_id) ->delete();
+      $post = $this->posts->find($post_id);
+      Storage::delete('public/images/'.$post->pic);
+      $delete = $this->posts->where('id',$post_id) ->delete();
         return response()->json(['success'=> true, 'message'=> "Post Successfully Deleted!!"]);
     }
     catch(Exception $ex)
@@ -139,8 +141,5 @@ class PostsController extends Controller
     $query = $this->likes->where('post_id','=',$post_id)->get();
     return response()->json(['likes'=>count($query)]);
   }
-
-
-
 
 }

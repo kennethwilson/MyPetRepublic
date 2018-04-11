@@ -21,6 +21,7 @@ class CreateDoggiesTable extends Migration
             $table->string('breed',50);
             $table->integer('owner_id')->unsigned();
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('displaypic',255)->default("default2.jpg");
             $table->timestamps();
         });
     }

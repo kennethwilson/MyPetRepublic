@@ -44,17 +44,19 @@ class UserController extends Controller
     if ($request->hasFile('displaypic')) {
       $destinationPath = 'storage/images'; // upload path
       $extension = Input::file('displaypic')->getClientOriginalExtension();
-      $folder = rand(11111,99999); // renaming image
-    //  Input::file('displaypic')->move($destinationPath, $fileName);
+      $fileName = rand(11111,99999).".".$extension; // renaming image
+      Input::file('displaypic')->move($destinationPath, $fileName);
 
-      //insert image into digital ocean DO_SPACES_SECRET
-      Storage::disk('spaces')->putFile($folder, Input::file('displaypic'),'public');
-
+      //Storage::disk('spaces')->putFile($folder, $request->displaypic,'public');
       try {
         $query = $this->user->find(auth()->user()->id);
         $original_dp = $query->displaypic;
-        $query->displaypic = $folder;
+        $query->displaypic = $fileName;
         $query->save();
+        if($original_dp!= 'default.jpg')
+        {
+          Storage::delete('public/images/'.$original_dp);
+        }
       }
       catch (Exception $e) {
         return response()->json(['success'=> false, 'error'=> $e],422);
@@ -143,13 +145,30 @@ class UserController extends Controller
       $doggie->desc = $desc;
       $doggie->breed = $breed;
       $doggie->owner_id = auth()->user()->id;
-      try{
-        $doggie->save();
+
+      if ($request->hasFile('displaypic')) {
+        $destinationPath = 'storage/images'; // upload path
+        $extension = Input::file('displaypic')->getClientOriginalExtension();
+        $fileName = rand(11111,99999).".".$extension; // renaming image
+        Input::file('displaypic')->move($destinationPath, $fileName);
+
+        $doggie->displaypic = $fileName;
+        try {
+          $doggie->save();
           return response()->json(['success'=> true, 'message'=> "Doggie Successfully Added!!"]);
+        }
+        catch (Exception $e) {
+          return response()->json(['success'=> false, 'error'=> $e],422);
+        }
       }
-      catch(Exception $ex)
-      {
-          return response()->json(['success'=> false, 'error'=> $ex]);
+      else {
+        try {
+          $doggie->save();
+          return response()->json(['success'=> true, 'message'=> "Doggie Successfully Added!!"]);
+        }
+        catch (Exception $e) {
+          return response()->json(['success'=> false, 'error'=> $e],422);
+        }
       }
   }
 
@@ -166,7 +185,9 @@ class UserController extends Controller
   public function deleteDoggie($doggieID)
   {
     try{
-      $doggie = $this->doggie->where('id',$doggieID) ->delete();
+      $doggie = $this->doggie->find($doggieID);
+      Storage::delete('public/images/'.$doggie->displaypic);
+      $delete= $this->doggie->where('id',$doggieID)->delete();
         return response()->json(['success'=> true, 'message'=> "Doggie Successfully Deleted!!"]);
     }
     catch(Exception $ex)
@@ -180,6 +201,29 @@ class UserController extends Controller
     $breed = $request->breed;
     $age   = $request->age;
     $desc  = $request->desc;
+
+    if ($request->hasFile('displaypic')) {
+      $destinationPath = 'storage/images'; // upload path
+      $extension = Input::file('displaypic')->getClientOriginalExtension();
+      $fileName = rand(11111,99999).".".$extension; // renaming image
+      Input::file('displaypic')->move($destinationPath, $fileName);
+
+      //Storage::disk('spaces')->putFile($folder, $request->displaypic,'public');
+      try {
+        $query = $this->doggie->find($doggieID);
+        $original_dp = $query->displaypic;
+        $query->displaypic = $fileName;
+        $query->save();
+        if($original_dp!= 'default2.jpg')
+        {
+          Storage::delete('public/images/'.$original_dp);
+        }
+      }
+      catch (Exception $e) {
+        return response()->json(['success'=> false, 'error'=> $e],422);
+      }
+    }
+
 
     $query = $this->doggie->find($doggieID);
 
