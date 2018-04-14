@@ -22,7 +22,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['password','email','username','name','is_verified','displaypic','bio'];
+    protected $fillable = ['password','email','username','name','is_verified','displaypic','bio','followers'];
 
     public function getJWTIdentifier()
     {
@@ -44,7 +44,6 @@ class User extends Authenticatable
       {
         return $this->hasMany(User::class, 'followers', 'followed_id', 'follower_id');
       }
-
       public function followings()
       {
         return $this->hasMany(User::class, 'followers', 'follower_id', 'followed_id');
@@ -59,8 +58,7 @@ class User extends Authenticatable
           $user['dog'] = $this->doggies->map(function ($data) {
                             return [ 'name'=> $data['name'], 'age'=> $data['age'], 'desc'=> $data['desc'], 'breed'=>$data['breed']];
                           })->toArray();
-
-          unset($user['created_at'], $user['updated_at'],$user['is_verified'],$user['id'],$user['displaypic']);
+          unset($user['created_at'], $user['updated_at'],$user['is_verified'],$user['id']);
           return $user;
       }
 

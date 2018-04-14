@@ -28,6 +28,10 @@ class ProfileController extends Controller
         $follow->follower_id = auth()->user()->id;
         $follow->followed_id = $profileId;
         $follow->save();
+
+        $query = $this->user->find($profileId);
+        $query->followers = $query->followers + 1;
+        $query->save();
         return response()->json(['success'=> true, 'message'=> "Successfully followed the user."]);
     }
 
@@ -38,7 +42,11 @@ class ProfileController extends Controller
           {
             return response()->json(['success'=> false, 'error'=> "User does not exist."]);
           }
+
         $query = $this->followers->where([ ['follower_id','=',auth()->user()->id],['followed_id','=',$profileId] ])->delete();
+        $query = $this->user->find($profileId);
+        $query->followers = $query->followers - 1;
+        $query->save();
           return response()->json(['success'=> true, 'message'=> "Successfully unfollowed the user."]);
     }
 }

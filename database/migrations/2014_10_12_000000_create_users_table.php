@@ -11,7 +11,7 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function up()  
+    public function up()
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('displaypic',255)->default("default.jpg");
             $table->string('bio',255)->default("");
+            $table->integer('followers')->unsigned()->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

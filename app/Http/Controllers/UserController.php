@@ -130,7 +130,7 @@ class UserController extends Controller
       $age = $request ->age;
       $desc = $request ->desc;
       $breed = $request ->breed;
-
+      $gender = $request->gender;
       // $doggie = [
       //   "name"   => $name,
       //   "age"    => $age,
@@ -144,6 +144,7 @@ class UserController extends Controller
       $doggie->age = $age;
       $doggie->desc = $desc;
       $doggie->breed = $breed;
+      $doggie->gender = $gender;
       $doggie->owner_id = auth()->user()->id;
 
       if ($request->hasFile('displaypic')) {
@@ -201,7 +202,7 @@ class UserController extends Controller
     $breed = $request->breed;
     $age   = $request->age;
     $desc  = $request->desc;
-
+    
     if ($request->hasFile('displaypic')) {
       $destinationPath = 'storage/images'; // upload path
       $extension = Input::file('displaypic')->getClientOriginalExtension();

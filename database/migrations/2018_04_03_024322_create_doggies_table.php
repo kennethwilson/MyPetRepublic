@@ -19,6 +19,7 @@ class CreateDoggiesTable extends Migration
             $table->integer('age')->unsigned();
             $table->string('desc',255);
             $table->string('breed',50);
+            $table->string('gender',8);
             $table->integer('owner_id')->unsigned();
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('displaypic',255)->default("default2.jpg");
