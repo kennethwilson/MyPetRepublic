@@ -31,7 +31,7 @@ class UserController extends Controller
   public function getName()
   {
     $query = $this->user->find(auth()->user()->id);
-    return response()->json($query->name);
+    return response(["name" => $query->name]);
   }
   public function update(Request $request)
   {
