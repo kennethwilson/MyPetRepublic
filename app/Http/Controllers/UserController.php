@@ -330,4 +330,18 @@ class UserController extends Controller
         }
 
       }
+
+      public function getUserProfile($id)
+      {
+        $doggies = $this->user->with('doggies')->find($id);
+        return response()->json($doggies);
+      }
+
+      public function followingCount($id)
+      {
+        $list = $this->followers->select('followed_id')->where('follower_id','=',$id)->get();
+        $count = count($list);
+        return response()->json(["followingsCount"=>$count]);
+      }
+
 }

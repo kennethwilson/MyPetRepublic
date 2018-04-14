@@ -54,12 +54,12 @@ class User extends Authenticatable
       }
       public function toSearchableArray()
       {
-          $user = $this->toArray();
-          $user['dog'] = $this->doggies->map(function ($data) {
-                            return [ 'name'=> $data['name'], 'age'=> $data['age'], 'desc'=> $data['desc'], 'breed'=>$data['breed']];
-                          })->toArray();
-          unset($user['created_at'], $user['updated_at'],$user['is_verified'],$user['id']);
-          return $user;
+            $user = $this->toArray();
+            $user['dog'] = $this->doggies->map(function ($data) {
+                              return [ 'name'=> $data['name'], 'age'=> $data['age'], 'desc'=> $data['desc'], 'breed'=>$data['breed']];
+                            })->toArray();
+            unset($user['created_at'], $user['updated_at'],$user['is_verified'],$user['id'],$user['email']);
+            return $user;
       }
 
 }
