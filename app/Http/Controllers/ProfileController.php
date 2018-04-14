@@ -8,20 +8,30 @@ use App\Model\Followers;
 class ProfileController extends Controller
 {
     protected $user;
-    public function __construct(User $user)
+    public function __construct(User $user,Followers $followers)
     {
       $this->user = $user;
+      $this->followers = $followers;
     }
 
     public function followUser(int $profileId)
     {
         $user = User::find($profileId);
         if(! $user) {
-          //return redirect()->back()->with('error', 'User does not exist.');
           return response()->json(['success'=> false, 'error'=> "User does not exist."]);
         }
-        $user->followers()->attach(auth()->user()->id);
-        //return redirect()->back()->with('success', 'Successfully followed the user.');
+        // $follow = [
+        //   "follower_id"   => auth()->user()->id,
+        //   "followed_id"    => $profileId
+        // ];
+        $follow = new Followers;
+        $follow->follower_id = auth()->user()->id;
+        $follow->followed_id = $profileId;
+        $follow->save();
+
+        $query = $this->user->find($profileId);
+        $query->followers = $query->followers + 1;
+        $query->save();
         return response()->json(['success'=> true, 'message'=> "Successfully followed the user."]);
     }
 
@@ -30,11 +40,13 @@ class ProfileController extends Controller
         $user = User::find($profileId);
         if(! $user)
           {
-            //return redirect()->back()->with('error', 'User does not exist.');
             return response()->json(['success'=> false, 'error'=> "User does not exist."]);
           }
-        $user->followers()->detach(auth()->user()->id);
-          //return redirect()->back()->with('success', 'Successfully unfollowed the user.');
+
+        $query = $this->followers->where([ ['follower_id','=',auth()->user()->id],['followed_id','=',$profileId] ])->delete();
+        $query = $this->user->find($profileId);
+        $query->followers = $query->followers - 1;
+        $query->save();
           return response()->json(['success'=> true, 'message'=> "Successfully unfollowed the user."]);
     }
 }

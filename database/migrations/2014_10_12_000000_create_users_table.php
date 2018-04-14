@@ -17,10 +17,13 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('username',100)->unique();
             $table->string('password');
             $table->string('displaypic',255)->default("default.jpg");
             $table->string('bio',255)->default("");
+            $table->integer('followers')->unsigned()->default(0);
             $table->rememberToken();
+            $table->timestamps();
         });
     }
 
