@@ -67,11 +67,11 @@ class UserController extends Controller
       $query->bio = $request->bio;
     try{
       $update =  $query->save();
-      return response()->json(['success'=> true, 'message'=> "Successfully updated user profile."]);
+      return response()->json(['success'=> true, 'message'=> "Successfully updated user profile."],200);
     }
     catch(Exception $ex)
     {
-      return response()->json(['success'=> false, 'error'=> $ex]);
+      return response()->json(['success'=> false, 'error'=> $ex],422);
     }
   }
 
