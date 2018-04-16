@@ -35,6 +35,10 @@ class UserController extends Controller
       $users = $this->user->all();
       return response()->json($users,200);
   }
+  public function getLoggedInID()
+  {
+    return response()->json(["name"=>auth()->user()->id]);
+  }
   public function getName()
   {
     return response()->json(["name"=>auth()->user()->name]);
@@ -67,11 +71,11 @@ class UserController extends Controller
       $query->bio = $request->bio;
     try{
       $update =  $query->save();
-      return response()->json(['success'=> true, 'message'=> "Successfully updated user profile."]);
+      return response()->json(['success'=> true, 'message'=> "Successfully updated user profile."],200);
     }
     catch(Exception $ex)
     {
-      return response()->json(['success'=> false, 'error'=> $ex]);
+      return response()->json(['success'=> false, 'error'=> $ex],422);
     }
   }
 
