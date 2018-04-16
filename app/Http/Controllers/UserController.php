@@ -35,6 +35,10 @@ class UserController extends Controller
       $users = $this->user->all();
       return response()->json($users,200);
   }
+  public function getLoggedInID()
+  {
+    return response()->json(["name"=>auth()->user()->id]);
+  }
   public function getName()
   {
     return response()->json(["name"=>auth()->user()->name]);
