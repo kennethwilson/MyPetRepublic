@@ -43,6 +43,12 @@ class UserController extends Controller
   {
     return response()->json(["name"=>auth()->user()->name]);
   }
+
+  public function getDogProfile($id)
+  {
+      $query = $this->doggie->find($id);
+      return response()->json($query,200);
+  }
   public function updateDisplayPic(Request $request)
   {
     return $request->file('displaypic');
@@ -373,5 +379,7 @@ class UserController extends Controller
         $count = count($list);
         return response()->json(["followingsCount"=>$count]);
       }
+
+
 
 }

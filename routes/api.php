@@ -21,7 +21,7 @@ Route::post('recoverpass','AuthController@recover');
 
 Route::get('profile/{id}','UserController@getUserProfile');
 Route::get('followingscount/{id}','UserController@followingCount');
-
+Route::get('getDogProfile/{id}','UserController@getDogProfile');
 Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('logout', 'AuthController@logout');
     Route::get('test', function(){
