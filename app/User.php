@@ -56,7 +56,7 @@ class User extends Authenticatable
       {
             $user = $this->toArray();
             $user['dog'] = $this->doggies->map(function ($data) {
-                              return ['dogname'=> $data['name'], 'age'=> $data['age'], 'desc'=> $data['desc'], 'breed'=>$data['breed']];
+                              return ['dog-id'=> $data['id'],'dogname'=> $data['name'], 'age'=> $data['age'], 'desc'=> $data['desc'], 'breed'=>$data['breed']];
                             })->toArray();
             unset($user['created_at'], $user['updated_at'],$user['is_verified'],$user['id'],$user['email']);
             return $user;
