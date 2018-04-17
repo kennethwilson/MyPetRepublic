@@ -13,7 +13,18 @@ class ProfileController extends Controller
       $this->user = $user;
       $this->followers = $followers;
     }
-
+    public function is_followed(int $id)
+    {
+      $userid = auth()->user()->id;
+      $query = $this->followers->where([['follower_id','=',$userid],['followed_id','=',$id]])->get();
+      if(count($query)!=0)
+      {
+        return response()->json(['is_followed'=> true]);
+      }
+      else {
+        return response()->json(['is_followed'=> false]);
+      }
+    }
     public function followUser(int $profileId)
     {
         $user = User::find($profileId);

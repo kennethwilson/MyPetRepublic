@@ -43,6 +43,30 @@ class UserController extends Controller
   {
     return response()->json(["name"=>auth()->user()->name]);
   }
+  public function updateDisplayPic(Request $request)
+  {
+    if ($request->hasFile('displaypic')) {
+      $destinationPath = 'storage/images'; // upload path
+      $extension = Input::file('displaypic')->getClientOriginalExtension();
+      $fileName = rand(11111,99999).".".$extension; // renaming image
+      Input::file('displaypic')->move($destinationPath, $fileName);
+
+      //Storage::disk('spaces')->putFile($folder, $request->displaypic,'public');
+      try {
+        $query = $this->user->find(auth()->user()->id);
+        $original_dp = $query->displaypic;
+        $query->displaypic = $fileName;
+        $query->save();
+        if($original_dp!= 'default.jpg')
+        {
+          Storage::delete('public/images/'.$original_dp);
+        }
+      }
+      catch (Exception $e) {
+        return response()->json(['success'=> false, 'error'=> $e],422);
+      }
+    }
+  }
   public function update(Request $request)
   {
     if ($request->hasFile('displaypic')) {

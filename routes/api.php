@@ -32,8 +32,10 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     });
     Route::post('profile/{profileId}/follow', 'ProfileController@followUser')->name('user.follow');
     Route::post('/{profileId}/unfollow', 'ProfileController@unFollowUser')->name('user.unfollow');
+    Route::get('profile/is_followed/{id}','ProfileController@is_followed');
 
     Route::post('update','UserController@update');
+    Route::post('updateDisplayPic','UserController@updateDisplayPic');
     Route::get('viewMyFollowings','UserController@viewMyFollowings');
     Route::get('viewMyFollowers','UserController@viewMyFollowers');
     Route::get('countFollowings','UserController@countFollowings');
