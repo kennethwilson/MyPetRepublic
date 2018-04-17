@@ -45,6 +45,7 @@ class UserController extends Controller
   }
   public function updateDisplayPic(Request $request)
   {
+    return $request->file('displaypic');
     if ($request->hasFile('displaypic')) {
       $destinationPath = 'storage/images'; // upload path
       $extension = Input::file('displaypic')->getClientOriginalExtension();
@@ -61,6 +62,7 @@ class UserController extends Controller
         {
           Storage::delete('public/images/'.$original_dp);
         }
+        return response()->json(['success'=> true, 'message'=> 'Display picture successfully updated!!'],200);
       }
       catch (Exception $e) {
         return response()->json(['success'=> false, 'error'=> $e],422);
