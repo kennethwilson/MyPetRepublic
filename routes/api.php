@@ -30,6 +30,11 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('user',function (Request $request){
         return $request->user();
     });
+
+    Route::get('/notifications', 'UserController@notifications');
+    Route::get('/readNotif','UserController@readNotif');
+    Route::get('/clearAllNotif','UserController@clearAllNotif');
+
     Route::post('profile/{profileId}/follow', 'ProfileController@followUser')->name('user.follow');
     Route::post('/{profileId}/unfollow', 'ProfileController@unFollowUser')->name('user.unfollow');
     Route::get('profile/is_followed/{id}','ProfileController@is_followed');

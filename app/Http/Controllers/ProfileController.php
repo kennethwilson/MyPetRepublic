@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Model\Followers;
+use App\Notifications\UserFollowed;
+use App\Model\Notifications;
 class ProfileController extends Controller
 {
     protected $user;
-    public function __construct(User $user,Followers $followers)
+    public function __construct(User $user,Followers $followers, UserFollowed $userfollowed, Notifications $notif)
     {
       $this->user = $user;
       $this->followers = $followers;
+      $this->UserFollowed = $userfollowed;
+      $this->notif = $notif;
     }
     public function is_followed(int $id)
     {
@@ -43,7 +47,11 @@ class ProfileController extends Controller
         $query = $this->user->find($profileId);
         $query->followers = $query->followers + 1;
         $query->save();
-        return response()->json(['success'=> true, 'message'=> "Successfully followed the user."]);
+
+        $user->notify(new UserFollowed(auth()->user()));
+
+
+        return response()->json(['success'=> true, 'message'=> "You are now following user:".$profileId." Notification id: "] );
     }
 
     public function unFollowUser(int $profileId)
@@ -58,6 +66,7 @@ class ProfileController extends Controller
         $query = $this->user->find($profileId);
         $query->followers = $query->followers - 1;
         $query->save();
-          return response()->json(['success'=> true, 'message'=> "Successfully unfollowed the user."]);
+
+          return response()->json(['success'=> true, 'message'=> "You are no longer following user: ".$profileId]);
     }
 }
