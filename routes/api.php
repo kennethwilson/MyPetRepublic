@@ -22,6 +22,7 @@ Route::post('recoverpass','AuthController@recover');
 Route::get('profile/{id}','UserController@getUserProfile');
 Route::get('followingscount/{id}','UserController@followingCount');
 Route::get('getDogProfile/{id}','UserController@getDogProfile');
+  //Route::post('updateDisplayPic/{id}','UserController@updateDisplayPic');
 Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('logout', 'AuthController@logout');
     Route::get('test', function(){
@@ -40,7 +41,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('profile/is_followed/{id}','ProfileController@is_followed');
 
     Route::post('update','UserController@update');
-    Route::post('updateDisplayPic','UserController@updateDisplayPic');
+  Route::post('updateDisplayPic','UserController@updateDisplayPic');
+
     Route::get('viewMyFollowings','UserController@viewMyFollowings');
     Route::get('viewMyFollowers','UserController@viewMyFollowers');
     Route::get('countFollowings','UserController@countFollowings');

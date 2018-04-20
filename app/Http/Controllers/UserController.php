@@ -99,7 +99,7 @@ class UserController extends Controller
   public function updateDisplayPic(Request $request)
   {
 
-    if ($request->hasFile('displaypic')) {
+    if (true) {
       $destinationPath = 'storage/images'; // upload path
       $extension = Input::file('displaypic')->getClientOriginalExtension();
       $fileName = rand(11111,99999).".".$extension; // renaming image
@@ -122,6 +122,7 @@ class UserController extends Controller
         return response()->json(['success'=> false, 'error'=> $e],422);
       }
     }
+    return response(["data" => "haha"]);
   }
   public function update(Request $request)
   {
