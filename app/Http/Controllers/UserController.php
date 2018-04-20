@@ -161,9 +161,10 @@ class UserController extends Controller
     if (true) {
       $destinationPath = 'storage/images'; // upload path
       $extension = Input::file('displaypic')->getClientOriginalExtension();
-      if($extension != "jpg" || $extension !='jpeg' || $extension != "png")
+      // ($extension != "jpg") || ($extension !='jpeg') || ($extension != "png")
+      if( $extension!='jpg')
       {
-        return response()->json(['success'=> false, 'error'=> 'Invalid file extension'],422);
+        return response()->json(['success'=> false, 'error'=> 'Invalid file extension'.$extension],422);
       }
       $fileName = rand(11111,99999).".".$extension; // renaming image
 
