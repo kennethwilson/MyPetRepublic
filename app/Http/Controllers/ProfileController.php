@@ -23,7 +23,7 @@ class ProfileController extends Controller
       $query = $this->followers->where([['follower_id','=',$userid],['followed_id','=',$id]])->get();
       if(count($query)!=0)
       {
-        return response()->json(['is_followed'=> "true");
+        return response()->json(['is_followed'=> "true")];
       }
       else {
         return response()->json(['is_followed'=> "false"]);

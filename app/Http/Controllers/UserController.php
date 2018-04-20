@@ -43,6 +43,38 @@ class UserController extends Controller
     $this->notif= $notif;
     $this->$meet_req = $meet_req;
   }
+
+  public function updateDoggiePic($doggieID)
+  {
+    if (true) {
+      $destinationPath = 'storage/images'; // upload path
+      $extension = Input::file('displaypic')->getClientOriginalExtension();
+      if($extension != "jpg")
+      {
+        return response()->json(['success'=> false, 'error'=> 'Invalid file extension'],422);
+      }
+      $fileName = rand(11111,99999).".".$extension; // renaming image
+
+      Input::file('displaypic')->move($destinationPath, $fileName);
+
+      try {
+        $query = $this->doggie->find($doggieID);
+        $original_dp = $query->displaypic;
+        $query->displaypic = $fileName;
+        $query->save();
+        if($original_dp!= 'default.jpg')
+        {
+          Storage::delete('public/images/'.$original_dp);
+        }
+        return response()->json(['success'=> true, 'message'=> 'Display picture successfully updated!'],200);
+
+      }
+      catch (Exception $e) {
+        return response()->json(['success'=> false, 'error'=> $e],422);
+      }
+    }
+    return response(["data" => "haha"]);
+  }
   public function countFollowings($id)
   {
     try {
@@ -157,11 +189,10 @@ class UserController extends Controller
   }
   public function updateDisplayPic(Request $request)
   {
-
     if (true) {
       $destinationPath = 'storage/images'; // upload path
       $extension = Input::file('displaypic')->getClientOriginalExtension();
-      if($extension != "jpg" || $extension !='jpeg' || $extension != "png")
+      if($extension != "jpg")
       {
         return response()->json(['success'=> false, 'error'=> 'Invalid file extension'],422);
       }
