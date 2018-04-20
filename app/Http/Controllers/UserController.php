@@ -115,7 +115,8 @@ class UserController extends Controller
         {
           Storage::delete('public/images/'.$original_dp);
         }
-        return response()->json(['success'=> true, 'message'=> 'Display picture successfully updated!!'],200);
+        return response()->json(['success'=> true, 'message'=> 'Display picture successfully updated!'],200);
+
       }
       catch (Exception $e) {
         return response()->json(['success'=> false, 'error'=> $e],422);
