@@ -10,9 +10,12 @@ use App\Model\Posts;
 use App\Model\Likes;
 use App\Model\Comments;
 use App\Model\Notifications;
+use App\Model\MeetRequests;
 use App\Notifications\UserFollowed;
 use App\Notifications\PostLiked;
 use App\Notifications\PostCommented;
+use App\Notifications\MeetRequest;
+
 use Illuminate\Support\Facades\Storage;
 use Exception;
 use Illuminate\Support\Facades\Input;
@@ -27,8 +30,9 @@ class UserController extends Controller
   protected $likes;
   protected $comments;
   protected $notif;
+  protected $meet_req;
   //date_default_timezone_set("Asia/Bangkok");
-  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts, Likes $likes, Comments $comments, Notifications $notif)
+  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts, Likes $likes, Comments $comments, Notifications $notif, MeetRequests $meet_req)
   {
     $this->user = $user;
     $this->followers = $followers;
@@ -37,6 +41,50 @@ class UserController extends Controller
     $this->likes = $likes;
     $this->comments = $comments;
     $this->notif= $notif;
+    $this->$meet_req = $meet_req;
+  }
+  public function countFollowings($id)
+  {
+    try {
+      $list = $this->followers->select('followed_id')->where('follower_id','=',$id)->get();
+      $count = count($list);
+      return response()->json($count,200);
+      }
+    catch (Exception $e) {
+      return response()->json(['success'=> false, 'error'=> $e]);
+    }
+  }
+
+  public function countFollowers($id)
+  {
+    try {
+      $list = $this->followers->select('follower_id')->where('followed_id','=',$id)->get();
+      $count = count($list);
+      return response()->json($count,200);
+      }
+    catch (Exception $e) {
+      return response()->json(['success'=> false, 'error'=> $e]);
+    }
+  }
+
+  public function sendMeetRequest($dogid1,$dogid2)
+  {
+      $request = new MeetRequests;
+      $request->requester_dog_id = $dogid1;
+      $request->requested_dog_id = $dogid2;
+
+      $query = $this->doggie->where('id',$dogid2)->first();
+      $notified = $this->user->find($query->owner_id);
+      $dog1 = $this->doggie->find($dogid1);
+      $dog2 = $this->doggie->find($dogid2);
+      try {
+        $request->save();
+        $notified->notify(new MeetRequest(auth()->user(),$dog1, $notified, $dog2));
+        return response()->json(['success'=> true, 'message'=> 'Meet request sent.'],200);
+      } catch (\Exception $e) {
+        return response()->json(['success'=> false, 'message'=> $e]);
+      }
+
   }
 
   public function clearAllNotif()
@@ -52,6 +100,17 @@ class UserController extends Controller
   {
         //return auth()->user()->unreadNotifications()->limit(5)->get()->toArray();     buat notifications yg blm di open
         return auth()->user()->Notifications()->limit(5)->get()->toArray();         //buat smua notifications
+  }
+  public function readNotifications($id)  //dipanggilnya pas user di page notification trus pas select comment/meet request notif
+  {
+      try {
+        $query = $this->notif->where('id','=',$id)->first();
+        $query->read_at = date('Y-m-d H:i:s');
+        $query->save();
+        return response()->json(['success'=> true, 'message'=> 'Notification opened'],200);
+      } catch (\Exception $e) {
+        return response()->json(['success'=> false, 'message'=> $e]);
+      }
   }
   public function readNotif() //panggil function ini every time user masuk ke notifications page
   {
@@ -102,7 +161,12 @@ class UserController extends Controller
     if (true) {
       $destinationPath = 'storage/images'; // upload path
       $extension = Input::file('displaypic')->getClientOriginalExtension();
+      if($extension != "jpg" || $extension !='jpeg' || $extension != "png")
+      {
+        return response()->json(['success'=> false, 'error'=> 'Invalid file extension'],422);
+      }
       $fileName = rand(11111,99999).".".$extension; // renaming image
+
       Input::file('displaypic')->move($destinationPath, $fileName);
 
       //Storage::disk('spaces')->putFile($folder, $request->displaypic,'public');
@@ -115,7 +179,8 @@ class UserController extends Controller
         {
           Storage::delete('public/images/'.$original_dp);
         }
-        return response()->json(['success'=> true, 'message'=> 'Display picture successfully updated!!'],200);
+        return response()->json(['success'=> true, 'message'=> 'Display picture successfully updated!'],200);
+
       }
       catch (Exception $e) {
         return response()->json(['success'=> false, 'error'=> $e],422);
@@ -159,36 +224,10 @@ class UserController extends Controller
     }
   }
 
-  public function countFollowings()
-  {
-    try {
-      $id = auth()->user()->id;
-      $list = $this->followers->select('followed_id')->where('follower_id','=',$id)->get();
-      $count = count($list);
-      return response()->json($count,200);
-      }
-    catch (Exception $e) {
-      return response()->json(['success'=> false, 'error'=> $e]);
-    }
-  }
 
-  public function countFollowers()
+  public function viewFollowings($id)
   {
     try {
-      $id = auth()->user()->id;
-      $list = $this->followers->select('follower_id')->where('followed_id','=',$id)->get();
-      $count = count($list);
-      return response()->json($count,200);
-      }
-    catch (Exception $e) {
-      return response()->json(['success'=> false, 'error'=> $e]);
-    }
-  }
-
-  public function viewMyFollowings()
-  {
-    try {
-      $id = auth()->user()->id;
       $list = $this->followers->select('followed_id')->where('follower_id','=',$id)->get();
       return response()->json($list,200);
       }
@@ -196,10 +235,9 @@ class UserController extends Controller
       return response()->json(['success'=> false, 'error'=> $e]);
     }
   }
-  public function viewMyFollowers()
+  public function viewFollowers($id)
   {
     try {
-      $id = auth()->user()->id;
       $list = $this->followers->select('follower_id')->where('followed_id','=',$id)->get();
       return response()->json($list,200);
       }
