@@ -36,8 +36,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('/readNotif','UserController@readNotif');
     Route::get('/clearAllNotif','UserController@clearAllNotif');
 
-    Route::post('profile/{profileId}/follow', 'ProfileController@followUser')->name('user.follow');
-    Route::post('/{profileId}/unfollow', 'ProfileController@unFollowUser')->name('user.unfollow');
+    Route::post('profile/{profileId}/follow', 'ProfileController@followUser');
+    Route::post('profile/{profileId}/unfollow', 'ProfileController@unFollowUser');
     Route::get('profile/is_followed/{id}','ProfileController@is_followed');
 
     Route::post('update','UserController@update');
