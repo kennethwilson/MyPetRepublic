@@ -32,21 +32,24 @@ Route::group(['middleware' => ['jwt.auth']], function() {
         return $request->user();
     });
 
-    Route::get('/notifications', 'UserController@notifications');
-    Route::get('/readNotif','UserController@readNotif');
-    Route::get('/clearAllNotif','UserController@clearAllNotif');
+    Route::get('sendMeetRequest/{dogid1}/{dogid2}','UserController@sendMeetRequest');
 
-    Route::post('profile/{profileId}/follow', 'ProfileController@followUser')->name('user.follow');
-    Route::post('/{profileId}/unfollow', 'ProfileController@unFollowUser')->name('user.unfollow');
+    Route::get('notifications', 'UserController@notifications');
+    Route::get('readNotif','UserController@readNotif');
+    Route::get('readComment/{id}','UserController@readComment');
+    Route::get('clearAllNotif','UserController@clearAllNotif');
+
+    Route::post('profile/{profileId}/follow', 'ProfileController@followUser');
+    Route::post('profile/{profileId}/unfollow', 'ProfileController@unFollowUser');
     Route::get('profile/is_followed/{id}','ProfileController@is_followed');
 
     Route::post('update','UserController@update');
-  Route::post('updateDisplayPic','UserController@updateDisplayPic');
+    Route::post('updateDisplayPic','UserController@updateDisplayPic');
 
-    Route::get('viewMyFollowings','UserController@viewMyFollowings');
-    Route::get('viewMyFollowers','UserController@viewMyFollowers');
-    Route::get('countFollowings','UserController@countFollowings');
-    Route::get('countFollowers','UserController@countFollowers');
+    Route::get('viewFollowings/{id}','UserController@viewFollowings');
+    Route::get('viewFollowers/{id}','UserController@viewFollowers');
+    Route::get('countFollowings/{id}','UserController@countFollowings');
+    Route::get('countFollowers/{id}','UserController@countFollowers');
 
     Route::post('addDoggie','UserController@addDoggie');
     Route::get('viewAllDoggie','UserController@viewAllDoggie');

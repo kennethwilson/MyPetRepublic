@@ -7,23 +7,25 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\User;
-use App\Model\Posts;  
-use App\Model\Comments;
-class PostCommented extends Notification
+use App\Model\Doggie;
+class MeetRequest extends Notification
 {
     use Queueable;
-    protected $commenter;
-    protected $posts;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $commenter, Posts $posts, string $comment )
+    protected $requester;
+    protected $requester_dog;
+    protected $requested;
+    protected $requested_dog;
+    public function __construct(User $requester,Doggie $requester_dog,User $requested, Doggie $requested_dog)
     {
-        $this->commenter = $commenter;
-        $this->posts = $posts;
-        $this->comment = $comment;
+        $this->requester = $requester;
+        $this->requester_dog = $requester_dog;
+        $this->requested = $requested;
+        $this->requested_dog = $requested_dog;
     }
 
     /**
@@ -39,10 +41,10 @@ class PostCommented extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'commenter_id' => $this->commenter->id,
-            'commenter_username' => $this->commenter->username,
-            'post'=> $this->posts->id,
-            'comment' => $this->comment,
+            'requester_username' => $this->requester->username,
+            'requester_dog_name' => $this->requester_dog->name,
+            'requested_username' => $this->requested->username,
+            'requested_dog_name' => $this->requested_dog->name,
         ];
     }
     /**
