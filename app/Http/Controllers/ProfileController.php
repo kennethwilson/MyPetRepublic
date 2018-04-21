@@ -69,4 +69,29 @@ class ProfileController extends Controller
 
           return response()->json(['success'=> true, 'message'=> "You are no longer following user: ".$profileId]);
     }
+
+    public function followedBy($id) //$id profile orngnya // target profile id
+    {
+      $query = $this->followers->where('follower_id',auth()->user()->id)->pluck('followed_id');  //orng" yg kta follow
+      $query2 = $this->followers->where('followed_id',$id)->pluck('follower_id'); //orng" yg follow orng yg kta lgi liat
+      $arr = array();
+      $count = 0;
+      for($i=0;$i<count($query);$i++)
+      {
+        for($j=0;$j<count($query2);$j++)
+        {
+          if($query[$i]==$query2[$j])
+          {
+            $arr[$count]=$query[$i];
+            $count =$count +1;
+          }
+        }
+      }
+      return $arr;
+
+    }
+
+
+
+
 }

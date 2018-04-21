@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::get('exploreByLikes','PostsController@exploreByLikes');
 
 Route::get('password/reset', 'Auth\ResetPasswordController@postReset')->name('password.reset');
 Route::post('register','AuthController@register');
@@ -32,6 +32,9 @@ Route::group(['middleware' => ['jwt.auth']], function() {
         return $request->user();
     });
 
+    Route::get('postYouMightLike','PostsController@postYouMightLike');
+
+    Route::get('followedBy/{id}','ProfileController@followedBy');
     Route::get('sendMeetRequest/{dogid1}/{dogid2}','UserController@sendMeetRequest');
 
     Route::get('notifications', 'UserController@notifications');
@@ -74,4 +77,5 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::post('comment_post/{post_id}','UserController@comment_post');
     Route::delete('delete_comment/{comment_id}','UserController@delete_comment');
     Route::get('commentDeletable/{comment_id}','UserController@commentDeletable');
+
 });
