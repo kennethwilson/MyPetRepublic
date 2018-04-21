@@ -428,7 +428,7 @@ class UserController extends Controller
       $query = $this->likes->where([ ['user_id','=',auth()->user()->id],['post_id','=',$post_id] ])->get();
       if(count($query)!=0)
       {
-        return response()->json(['is_post_liked?'=> 'yes']);
+        return response()->json(['is_post_liked'=> 'yes']);
       }
       else {
         return response()->json(['is_post_liked'=>'no']);

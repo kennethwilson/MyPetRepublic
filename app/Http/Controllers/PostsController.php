@@ -29,10 +29,16 @@ class PostsController extends Controller
   {
       $caption = $request->caption;
       $location = $request ->location;
-      if(  (is_null($caption)) && (!($request->hasFile('pic')))  )
+      if($caption == "undefined")
       {
-        return response()->json(['success'=> false, 'error'=> "You can't add an empty post"]);
+        $caption=null;
       }
+      if($location == "undefined")
+      {
+        $location=null;
+      }
+
+
     if ($request->hasFile('pic')) {
       $file = array('pic' => Input::file('pic'));
       $destinationPath = 'storage/images'; // upload path
@@ -61,18 +67,18 @@ class PostsController extends Controller
       }
     }
     else {
-      $post = new Posts;
-      $post->caption = $caption;
-      $post->location = $location;
-      $post->dog_id = $dog_id;
-      try {
-          $post->save();
-          return response()->json(['success'=> true, 'message'=> "Successfully posted!!"]);
+      // $post = new Posts;
+      // $post->caption = $caption;
+      // $post->location = $location;
+      // $post->dog_id = $dog_id;
+      // try {
+      //     $post->save();
+      //     return response()->json(['success'=> true, 'message'=> "Successfully posted!!"]);
+      // }
+      // catch (Exception $e) {
+
+        return response()->json(['success'=> false, 'error'=> "You have to upload picture"]);
       }
-      catch (Exception $e) {
-        return response()->json(['success'=> false, 'error'=> $e]);
-      }
-    }
   }
 
   public function deletePost($post_id) //kurang delete pic dri storage/public

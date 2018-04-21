@@ -73,4 +73,5 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::post('comment_post/{post_id}','UserController@comment_post');
     Route::delete('delete_comment/{comment_id}','UserController@delete_comment');
+    Route::get('commentDeletable/{comment_id}','UserController@commentDeletable');
 });
