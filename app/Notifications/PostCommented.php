@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\User;
-use App\Model\Posts;  
+use App\Model\Posts;
 use App\Model\Comments;
 class PostCommented extends Notification
 {
@@ -43,6 +43,7 @@ class PostCommented extends Notification
             'commenter_username' => $this->commenter->username,
             'post'=> $this->posts->id,
             'comment' => $this->comment,
+            'response' => $this->commenter->username." commented on your post: ". $this->comment, 
         ];
     }
     /**

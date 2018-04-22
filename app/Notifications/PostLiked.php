@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable; 
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -38,7 +38,7 @@ class PostLiked extends Notification
     {
         return [
             'liker_id' => $this->liker->id,
-            'liker_username' => $this->liker->username,
+            'liker_username' => $this->liker->username. " liked your post!",
             'post'=> $this->posts->id,
         ];
     }

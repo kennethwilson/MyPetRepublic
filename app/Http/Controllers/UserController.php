@@ -260,8 +260,15 @@ class UserController extends Controller
   public function viewFollowings($id)
   {
     try {
-      $list = $this->followers->select('followed_id')->where('follower_id','=',$id)->get();
-      return response()->json($list,200);
+      $arr = array();
+      $list = $this->followers->where('follower_id','=',$id)->get();
+      for($i=0;$i<count($list);$i++)
+      {
+          $query = $this->user->where('id',$list[$i]->followed_id)->first();
+          $arr[$i] = $query;
+      }
+
+      return response()->json($arr,200);
       }
     catch (Exception $e) {
       return response()->json(['success'=> false, 'error'=> $e]);
@@ -269,9 +276,15 @@ class UserController extends Controller
   }
   public function viewFollowers($id)
   {
+    $arr = array();
     try {
-      $list = $this->followers->select('follower_id')->where('followed_id','=',$id)->get();
-      return response()->json($list,200);
+      $list = $this->followers->where('followed_id','=',$id)->get();
+      for($i=0;$i<count($list);$i++)
+      {
+          $query = $this->user->where('id',$list[$i]->follower_id)->first();
+          $arr[$i] = $query;
+      }
+      return response()->json($arr,200);
       }
     catch (Exception $e) {
       return response()->json(['success'=> false, 'error'=> $e]);

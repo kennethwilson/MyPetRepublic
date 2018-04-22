@@ -8,6 +8,7 @@ use App\Model\Followers;
 use App\Model\Doggie;
 use App\Model\Posts;
 use App\Model\Likes;
+use App\Model\Comments;
 use Illuminate\Support\Facades\Storage;
 use Exception;
 use Illuminate\Support\Facades\Input;
@@ -17,13 +18,21 @@ class PostsController extends Controller
   protected $user;
   protected $followers;
   protected $posts;
-  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts, Likes $likes)
+  protected $comments;
+  public function __construct(User $user, Followers $followers, Doggie $doggie, Posts $posts, Likes $likes, Comments $comments)
   {
     $this->user = $user;
     $this->followers = $followers;
     $this->doggie = $doggie;
     $this->posts = $posts;
     $this->likes  = $likes;
+    $this->comments = $comments;
+  }
+  public function getComment($post_id)
+  {
+      $query = $this->comments->select('comments.id','comments.user_id','comments.post_id','comments.comment','users.username','comments.created_at')->join('users','users.id','comments.user_id')->where('post_id', $post_id)->get();
+
+      return $query;
   }
   public function post(Request $request,$dog_id)
   {
@@ -111,7 +120,7 @@ class PostsController extends Controller
   public function viewPost($post_id)
   {
     try{
-      $posts = $this->posts->where('id',$post_id)->get();
+      $posts = $this->posts->with('comments')->where('id',$post_id)->get();
       return response()->json($posts);
     }
     catch(Exception $ex)
@@ -149,7 +158,7 @@ class PostsController extends Controller
 
   public function exploreByLikes() //popular posts
   {
-    $query = $this->posts->withCount('likes')->orderBy('likes_count', 'desc')->get(); //take= ambil brp records ->take(9)->get();
+    $query = $this->posts->withCount('likes')->orderBy('likes_count', 'desc')->take(9)->get(); //take= ambil brp records ->take(9)->get();
     return $query;
   }
   public function postYouMightLike()  //based on user's doggie
@@ -164,14 +173,23 @@ class PostsController extends Controller
         $count = $count + 1;
     }
     $random = rand(0, $count-1);
-
-    $dogs = $this->doggie->where([ ['owner_id','!=',auth()->user()->id],['breed','=',$dogtypes[$random]] ])->inRandomOrder()->take(10)->get(); //ambil 10 doggie yg breednya sama kyk salah satu anjing dia
-    for($i=0;$i<count($dogs);$i++)
+    $dogs = $this->doggie->select('doggies.id')->join('users','users.id','doggies.owner_id')->where([ ['owner_id','!=',auth()->user()->id],['breed','=',$dogtypes[$random]] ])->orderBy('followers','desc')->take(10)->get(); //ambil 10 doggie yg breednya sama kyk salah satu anjing dia
+    if(count($dogs)!=0)
     {
-        $posts = $this->posts->withCount('likes')->where('dog_id',"=",$dogs[$i]->id)->orderBy('likes_count', 'desc')->first();//ambil post doggienya yg paling banyk like
-        $post[$i] = $posts->id;
+      for($i=0;$i<count($dogs);$i++)
+      {
+          $posts = $this->posts->withCount('likes')->where('dog_id',$dogs[$i]->id)->orderBy('likes_count', 'desc')->get();//ambil post doggienya yg paling banyk like
+          $post[$i] = $posts;
+      }
+    }
+    else {
+      return response()->json(['message'=>"Cannot get posts"]);
     }
     return $post;
   }
-
+  public function commentCount($comment_id)
+    {
+      $query = $this->posts->withCount('comments')->find($comment_id);
+      return response()->json(['comments_count'=>$query->comments_count]);
+    }
 }

@@ -22,6 +22,19 @@ Route::post('recoverpass','AuthController@recover');
 Route::get('profile/{id}','UserController@getUserProfile');
 Route::get('followingscount/{id}','UserController@followingCount');
 Route::get('getDogProfile/{id}','UserController@getDogProfile');
+Route::get('viewAllPosts/{dog_id}','PostsController@viewAllPosts');
+Route::get('viewPost/{post_id}','PostsController@viewPost');
+Route::get('likeCount/{post_id}','PostsController@likeCount');
+
+Route::get('viewFollowings/{id}','UserController@viewFollowings');
+Route::get('viewFollowers/{id}','UserController@viewFollowers');
+Route::get('countFollowings/{id}','UserController@countFollowings');
+Route::get('countFollowers/{id}','UserController@countFollowers');
+
+Route::get('viewAllDoggie','UserController@viewAllDoggie');
+Route::get('getComment/{post_id}','PostsController@getComment');
+
+
   //Route::post('updateDisplayPic/{id}','UserController@updateDisplayPic');
 Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('logout', 'AuthController@logout');
@@ -49,13 +62,10 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::post('update','UserController@update');
     Route::post('updateDisplayPic','UserController@updateDisplayPic');
 
-    Route::get('viewFollowings/{id}','UserController@viewFollowings');
-    Route::get('viewFollowers/{id}','UserController@viewFollowers');
-    Route::get('countFollowings/{id}','UserController@countFollowings');
-    Route::get('countFollowers/{id}','UserController@countFollowers');
+
 
     Route::post('addDoggie','UserController@addDoggie');
-    Route::get('viewAllDoggie','UserController@viewAllDoggie');
+
     Route::get('viewAllMyDoggie','UserController@viewAllMyDoggie');
     Route::delete('delete/{doggieID}','UserController@deleteDoggie');
     Route::post('update/{doggieID}','UserController@updateDoggie');
@@ -65,10 +75,9 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::post('/post/{dog_id}','PostsController@post');
     Route::delete('deletePost/{post_id}','PostsController@deletePost');
-    Route::get('viewAllPosts/{dog_id}','PostsController@viewAllPosts');
-    Route::get('viewPost/{post_id}','PostsController@viewPost');
+
     Route::post('updatePost/{post_id}','PostsController@updatePost');
-    Route::get('likeCount/{post_id}','PostsController@likeCount');
+
 
     Route::get('likePost/{post_id}','UserController@likePost');
     Route::get('unlikePost/{post_id}','UserController@unlikePost');
@@ -77,5 +86,5 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::post('comment_post/{post_id}','UserController@comment_post');
     Route::delete('delete_comment/{comment_id}','UserController@delete_comment');
     Route::get('commentDeletable/{comment_id}','UserController@commentDeletable');
-
+    Route::get('commentCount/{comment_id}','PostsController@commentCount');
 });

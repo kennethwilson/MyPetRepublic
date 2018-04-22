@@ -34,8 +34,8 @@ class UserFollowed extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'follower_id' => $this->follower->id,
-            'follower_username' => $this->follower->username,
+            'follower_id' => $this->follower->id ,
+            'follower_username' => $this->follower->username.' started following you!',
         ];
     }
     /**
