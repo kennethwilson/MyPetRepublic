@@ -28,6 +28,11 @@ class PostsController extends Controller
     $this->likes  = $likes;
     $this->comments = $comments;
   }
+  public function getDogID($post_id)
+  {
+    $query = $this->posts->find($post_id);
+    return $query->dog_id;
+  }
   public function getComment($post_id)
   {
       $query = $this->comments->select('comments.id','comments.user_id','comments.post_id','comments.comment','users.username','comments.created_at')->join('users','users.id','comments.user_id')->where('post_id', $post_id)->get();

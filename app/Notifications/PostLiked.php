@@ -38,7 +38,8 @@ class PostLiked extends Notification
     {
         return [
             'liker_id' => $this->liker->id,
-            'liker_username' => $this->liker->username. " liked your post!",
+            'liker_username'=> $this->liker->username,
+            'like_response' => $this->liker->username. " liked your post!",
             'post'=> $this->posts->id,
         ];
     }

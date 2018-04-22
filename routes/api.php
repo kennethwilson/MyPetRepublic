@@ -1,4 +1,4 @@
-<?php
+  <?php
 
 use Illuminate\Http\Request;
 
@@ -44,6 +44,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('user',function (Request $request){
         return $request->user();
     });
+
+    Route::get('getDogID/{post_id}','PostsController@getDogID');
 
     Route::get('postYouMightLike','PostsController@postYouMightLike');
 

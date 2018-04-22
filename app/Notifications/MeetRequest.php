@@ -45,7 +45,7 @@ class MeetRequest extends Notification
             'requester_dog_name' => $this->requester_dog->name,
             'requested_username' => $this->requested->username,
             'requested_dog_name' => $this->requested_dog->name,
-            'response' => $this->requester->username. " 's ". $this->requester_dog->name. " requested to meet your dog: ".$this->requested_dog->name;  
+            'meet_response' => $this->requester->username. " 's ". $this->requester_dog->name. " requested to meet your dog: ".$this->requested_dog->name;  
         ];
     }
     /**

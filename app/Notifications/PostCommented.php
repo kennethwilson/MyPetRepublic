@@ -43,7 +43,7 @@ class PostCommented extends Notification
             'commenter_username' => $this->commenter->username,
             'post'=> $this->posts->id,
             'comment' => $this->comment,
-            'response' => $this->commenter->username." commented on your post: ". $this->comment, 
+            'comment_response' => $this->commenter->username." commented on your post: ". $this->comment, 
         ];
     }
     /**

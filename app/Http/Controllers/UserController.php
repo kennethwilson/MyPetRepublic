@@ -131,7 +131,7 @@ class UserController extends Controller
   public function notifications() //get notifications
   {
         //return auth()->user()->unreadNotifications()->limit(5)->get()->toArray();     buat notifications yg blm di open
-        return auth()->user()->Notifications()->limit(5)->get()->toArray();         //buat smua notifications
+        return auth()->user()->Notifications()->select('data','type','created_at','notifiable_id')->get()->toArray();         //buat smua notifications
   }
   public function readNotifications($id)  //dipanggilnya pas user di page notification trus pas select comment/meet request notif
   {
@@ -179,7 +179,7 @@ class UserController extends Controller
   }
   public function getName()
   {
-    return response()->json(["name"=>auth()->user()->name]);
+    return response()->json(["name"=>auth()->user()->username]);
   }
 
   public function getDogProfile($id)
