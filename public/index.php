@@ -1,9 +1,4 @@
 <?php
-header('Access-Control-Allow-Origin:*');
-
-header('Access-Control-Allow-Headers:Authorization, X-Requested-With, content-type, access-control-allow-origin, access-control-allow-methods, access-control-allow-headers, X-XSRF-TOKEN, Origin, Authorization, X-Auth-Token');
-header('Access-Control-Allow-Methods:GET,POST,PUT,PATCH,DELETE');
-
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
@@ -52,6 +47,10 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 | and wonderful application we have prepared for them.
 |
 */
+header('Access-Control-Allow-Origin:*');
+
+header('Access-Control-Allow-Headers:Authorization, X-Requested-With, content-type, access-control-allow-origin, access-control-allow-methods, access-control-allow-headers, X-XSRF-TOKEN, Origin, Authorization, X-Auth-Token');
+header('Access-Control-Allow-Methods:GET,POST,PUT,PATCH,DELETE');
 
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
