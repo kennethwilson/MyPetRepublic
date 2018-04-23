@@ -38,6 +38,7 @@ class AuthController extends Controller
         $user->name = $name;
         $user->email = $email;
         $user->password = Hash::make($password);
+        $user->is_verified = 1;
         $user->save();
 
                //$user = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
