@@ -131,7 +131,7 @@ class UserController extends Controller
   public function notifications() //get notifications
   {
         //return auth()->user()->unreadNotifications()->limit(5)->get()->toArray();     buat notifications yg blm di open
-        return auth()->user()->Notifications()->select('data','type','created_at','notifiable_id')->get()->toArray();         //buat smua notifications
+        return auth()->user()->Notifications()->select('data','type','created_at','notifiable_id','read_at','id')->get()->toArray();         //buat smua notifications
   }
   public function readNotifications($id)  //dipanggilnya pas user di page notification trus pas select comment/meet request notif
   {
@@ -141,7 +141,7 @@ class UserController extends Controller
         $query->save();
         return response()->json(['success'=> true, 'message'=> 'Notification opened'],200);
       } catch (\Exception $e) {
-        return response()->json(['success'=> false, 'message'=> $e]);
+        return response()->json(['success'=> false, 'message'=> $e],433);
       }
   }
   public function readNotif() //panggil function ini every time user masuk ke notifications page
