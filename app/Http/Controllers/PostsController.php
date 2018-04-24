@@ -168,39 +168,74 @@ class PostsController extends Controller
   }
 
   public function exploreByLikes() //popular posts
-  {
-    $query = $this->posts->withCount('likes')->orderBy('likes_count', 'desc')->take(9)->get(); //take= ambil brp records ->take(9)->get();
-    return $query;
-  }
-  public function postYouMightLike()  //based on user's doggie
-  {
-    $query = $this->doggie->where('owner_id',auth()->user()->id)->get();
-    $dogtypes = array();
-    $post = array();
-    $count = 0;
-    for($i=0;$i<count($query);$i++)
     {
-        $dogtypes[$count] = $query[$i]->breed;
-        $count = $count + 1;
+      $post1 = $this->posts->
+        select('posts.pic as pic','posts.id as id','doggies.owner_id as owner_id','doggies.id as dogID','doggies.name as dogname','users.username as owner_username')->
+        join('doggies','posts.dog_id','doggies.id')->
+        join('users','doggies.owner_id','users.id')->
+        withCount('likes as likecount')->
+        orderBy('likecount','desc')->get();
+      return $post1;
     }
-    $random = rand(0, $count-1);
-    $dogs = $this->doggie->select('doggies.id')->join('users','users.id','doggies.owner_id')->where([ ['owner_id','!=',auth()->user()->id],['breed','=',$dogtypes[$random]] ])->orderBy('followers','desc')->take(10)->get(); //ambil 10 doggie yg breednya sama kyk salah satu anjing dia
-    if(count($dogs)!=0)
-    {
-      for($i=0;$i<count($dogs);$i++)
+    public function postYouMightLike()  //based on user's doggie
       {
-          $posts = $this->posts->withCount('likes')->where('dog_id',$dogs[$i]->id)->orderBy('likes_count', 'desc')->get();//ambil post doggienya yg paling banyk like
-          $post[$i] = $posts;
+        $query = $this->doggie->where('owner_id',auth()->user()->id)->get();
+        $dogtypes = array();
+        $post = array();
+        $count = 0;
+           for($i=0;$i<count($query);$i++)
+        {
+            $dogtypes[$count] = $query[$i]->breed;
+            $count = $count + 1;
+        }
+        $random = rand(0, $count-1);
+        $dogs = $this->doggie->select('doggies.id')->join('users','users.id','doggies.owner_id')->where([ ['owner_id','!=',auth()->user()->id],['breed','=',$dogtypes[$random]] ])->orderBy('followers','desc')->take(10)->get(); //ambil 10 doggie yg breednya sama kyk salah satu anjing dia
+        if(count($dogs)!=0)
+        {
+          for($i=0;$i<count($dogs);$i++)
+          {
+            $posts = $this->posts->
+              select('posts.pic as pic','posts.id as id','doggies.owner_id as owner_id','doggies.id as dogID','doggies.name as dogname','users.username as owner_username')->
+              join('doggies','posts.dog_id','doggies.id')->
+              join('users','doggies.owner_id','users.id')->
+              where('dog_id',$query[$i]->dogid)->
+              withCount('likes as likecount')->
+              orderBy('likecount','desc')->get();
+              $post[$i] = $posts;
+          }
+        }
+        else {
+          return response()->json(['message'=>"Cannot get posts"]);
+        }
+        return $post;
       }
-    }
-    else {
-      return response()->json(['message'=>"Cannot get posts"]);
-    }
-    return $post;
-  }
   public function commentCount($comment_id)
     {
       $query = $this->posts->withCount('comments')->find($comment_id);
       return response()->json(['comments_count'=>$query->comments_count]);
     }
+    public function feed()
+      {
+        $query= $this->followers->select('doggies.id as dogid')->join('users','followers.followed_id','users.id')->join('doggies','users.id','doggies.owner_id')->
+          where('follower_id',auth()->user()->id)->get();
+        $postarr = array();
+        if(count($query) == 0)
+        {
+          return response()->json(['success'=> false, 'error'=> 'Feed empty. Follow other users to fill up your feed!!'],422);
+        }
+        else
+        {
+          for($i=0;$i<count($query);$i ++)
+          {
+            $post1 = $this->posts->
+              select('posts.pic as pic','posts.id as id','doggies.owner_id as owner_id','doggies.id as dogID','doggies.name as dogname','users.username as owner_username')->
+              join('doggies','posts.dog_id','doggies.id')->
+              join('users','doggies.owner_id','users.id')->
+              where('dog_id',$query[$i]->dogid)->
+              orderBy('posts.created_at','desc')->get();
+              $postarr[$i] = $post1;
+          }
+        }
+        return $postarr;
+      }
 }

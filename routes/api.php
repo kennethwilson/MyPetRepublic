@@ -48,7 +48,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('getDogID/{post_id}','PostsController@getDogID');
 
     Route::get('postYouMightLike','PostsController@postYouMightLike');
-
+    Route::get('feed','PostsController@feed');
+    
     Route::get('followedBy/{id}','ProfileController@followedBy');
     Route::get('sendMeetRequest/{dogid1}/{dogid2}','UserController@sendMeetRequest');
 
