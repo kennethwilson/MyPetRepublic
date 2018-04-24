@@ -183,6 +183,10 @@ class PostsController extends Controller
         $dogtypes = array();
         $post = array();
         $count = 0;
+        if(count($query))
+        {
+          return response()->json(['success'=> false, 'error'=> 'You do not have any dogs. We do not know what you might like :('],422);
+        }
            for($i=0;$i<count($query);$i++)
         {
             $dogtypes[$count] = $query[$i]->breed;
@@ -201,11 +205,15 @@ class PostsController extends Controller
               where('dog_id',$query[$i]->dogid)->
               withCount('likes as likecount')->
               orderBy('likecount','desc')->get();
+              if(count($posts) == 0)
+              {
+                  return response()->json(['success'=> false, 'error'=> 'Oops. We do not have any other related posts'],422);
+              }
               $post[$i] = $posts;
           }
         }
         else {
-          return response()->json(['message'=>"Cannot get posts"]);
+          return response()->json(['message'=>"Cannot get any related posts"]);
         }
         return $post;
       }
@@ -233,6 +241,10 @@ class PostsController extends Controller
               join('users','doggies.owner_id','users.id')->
               where('dog_id',$query[$i]->dogid)->
               orderBy('posts.created_at','desc')->get();
+              if(count($posts)==0)
+              {
+                return response()->json(['success'=> false, 'error'=> 'Feed empty. Follow other users to fill up your feed!!'],422);
+              }
               $postarr[$i] = $post1;
           }
         }

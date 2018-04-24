@@ -46,11 +46,11 @@ class AuthController extends Controller
 
                DB::table('user_verifications')->insert(['user_id'=>$user->id,'token'=>$verification_code]);
                $subject = "Please verify your email address.";
-               Mail::send('verify', ['name' => $name, 'verification_code' => $verification_code],
-                   function($mail) use ($email, $name, $subject){
-                       $mail->to($email, $name);
-                       $mail->subject($subject);
-                   });
+               // Mail::send('verify', ['name' => $name, 'verification_code' => $verification_code],
+               //     function($mail) use ($email, $name, $subject){
+               //         $mail->to($email, $name);
+               //         $mail->subject($subject);
+               //     });
                return response()->json(['success'=> true, 'message'=> 'Thanks for signing up! Please check your email to complete your registration.']);
     }
 
