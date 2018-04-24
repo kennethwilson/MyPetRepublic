@@ -241,7 +241,7 @@ class PostsController extends Controller
               join('users','doggies.owner_id','users.id')->
               where('dog_id',$query[$i]->dogid)->
               orderBy('posts.created_at','desc')->get();
-              if(count($posts)==0)
+              if(count($post1)==0)
               {
                 return response()->json(['success'=> false, 'error'=> 'Feed empty. Follow other users to fill up your feed!!'],422);
               }
