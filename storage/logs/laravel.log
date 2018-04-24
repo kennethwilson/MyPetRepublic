@@ -10038,3 +10038,88 @@ Did you mean one of these?
 #24 C:\\xampp\\htdocs\\gg\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #25 {main}
 "} 
+[2018-04-24 21:02:52] local.ERROR: Not enough arguments (missing: "model"). {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): Not enough arguments (missing: \"model\"). at C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Input\\Input.php:76)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Command\\Command.php(247): Symfony\\Component\\Console\\Input\\Input->validate()
+#1 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#2 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Application.php(946): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Application.php(248): Symfony\\Component\\Console\\Application->doRunCommand(Object(Laravel\\Scout\\Console\\FlushCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Application.php(148): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#6 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 C:\\xampp\\htdocs\\gg\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2018-04-24 21:03:10] local.ERROR: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ {"exception":"[object] (PDOException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ at C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:67)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(67): PDO->__construct('mysql:host=127....', 'root', '', Array)
+#1 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(43): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('mysql:host=127....', 'root', '', Array)
+#2 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\MySqlConnector.php(24): Illuminate\\Database\\Connectors\\Connector->createConnection('mysql:host=127....', Array, Array)
+#3 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\ConnectionFactory.php(183): Illuminate\\Database\\Connectors\\MySqlConnector->connect(Array)
+#4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->Illuminate\\Database\\Connectors\\{closure}()
+#5 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(915): call_user_func(Object(Closure))
+#6 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(940): Illuminate\\Database\\Connection->getPdo()
+#7 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(399): Illuminate\\Database\\Connection->getReadPdo()
+#8 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(325): Illuminate\\Database\\Connection->getPdoForSelect(true)
+#9 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(657): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}('select * from `...', Array)
+#10 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
+#11 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(333): Illuminate\\Database\\Connection->run('select * from `...', Array, Object(Closure))
+#12 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(1719): Illuminate\\Database\\Connection->select('select * from `...', Array, true)
+#13 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(1704): Illuminate\\Database\\Query\\Builder->runSelect()
+#14 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(483): Illuminate\\Database\\Query\\Builder->get(Array)
+#15 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(467): Illuminate\\Database\\Eloquent\\Builder->getModels(Array)
+#16 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Concerns\\BuildsQueries.php(28): Illuminate\\Database\\Eloquent\\Builder->get()
+#17 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\scout\\src\\SearchableScope.php(46): Illuminate\\Database\\Eloquent\\Builder->chunk(500, Object(Closure))
+#18 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(1269): Laravel\\Scout\\SearchableScope->Laravel\\Scout\\{closure}(Object(Illuminate\\Database\\Eloquent\\Builder))
+#19 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\scout\\src\\Searchable.php(152): Illuminate\\Database\\Eloquent\\Builder->__call('unsearchable', Array)
+#20 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\scout\\src\\Console\\FlushCommand.php(43): App\\User::removeAllFromSearch()
+#21 [internal function]: Laravel\\Scout\\Console\\FlushCommand->handle(Object(Illuminate\\Events\\Dispatcher))
+#22 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(29): call_user_func_array(Array, Array)
+#23 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#24 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#25 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(549): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#26 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#27 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Command\\Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#28 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#29 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Application.php(946): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#30 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Application.php(248): Symfony\\Component\\Console\\Application->doRunCommand(Object(Laravel\\Scout\\Console\\FlushCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#31 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Application.php(148): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#32 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#33 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#34 C:\\xampp\\htdocs\\gg\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#35 {main}
+"} 
+[2018-04-24 21:03:10] local.ERROR: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ (SQL: select * from `users` order by `id` asc limit 500 offset 0) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ (SQL: select * from `users` order by `id` asc limit 500 offset 0) at C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ at C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:67)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
+#1 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(333): Illuminate\\Database\\Connection->run('select * from `...', Array, Object(Closure))
+#2 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(1719): Illuminate\\Database\\Connection->select('select * from `...', Array, true)
+#3 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(1704): Illuminate\\Database\\Query\\Builder->runSelect()
+#4 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(483): Illuminate\\Database\\Query\\Builder->get(Array)
+#5 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(467): Illuminate\\Database\\Eloquent\\Builder->getModels(Array)
+#6 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Concerns\\BuildsQueries.php(28): Illuminate\\Database\\Eloquent\\Builder->get()
+#7 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\scout\\src\\SearchableScope.php(46): Illuminate\\Database\\Eloquent\\Builder->chunk(500, Object(Closure))
+#8 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(1269): Laravel\\Scout\\SearchableScope->Laravel\\Scout\\{closure}(Object(Illuminate\\Database\\Eloquent\\Builder))
+#9 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\scout\\src\\Searchable.php(152): Illuminate\\Database\\Eloquent\\Builder->__call('unsearchable', Array)
+#10 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\scout\\src\\Console\\FlushCommand.php(43): App\\User::removeAllFromSearch()
+#11 [internal function]: Laravel\\Scout\\Console\\FlushCommand->handle(Object(Illuminate\\Events\\Dispatcher))
+#12 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(29): call_user_func_array(Array, Array)
+#13 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#14 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#15 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(549): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#16 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#17 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Command\\Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#18 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#19 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Application.php(946): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#20 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Application.php(248): Symfony\\Component\\Console\\Application->doRunCommand(Object(Laravel\\Scout\\Console\\FlushCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#21 C:\\xampp\\htdocs\\gg\\vendor\\symfony\\console\\Application.php(148): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 C:\\xampp\\htdocs\\gg\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 C:\\xampp\\htdocs\\gg\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 {main}
+"} 
