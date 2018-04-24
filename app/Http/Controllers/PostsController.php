@@ -31,7 +31,13 @@ class PostsController extends Controller
   public function getDogID($post_id)
   {
     $query = $this->posts->find($post_id);
-    return $query->dog_id;
+    if($query)
+    {
+      return $query->dog_id;
+    }
+    else {
+      {return false;}
+    }
   }
   public function getComment($post_id)
   {
