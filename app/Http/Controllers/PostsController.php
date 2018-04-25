@@ -183,7 +183,7 @@ class PostsController extends Controller
         $dogtypes = array();
         $post = array();
         $count = 0;
-        if(count($query))
+        if(count($query)==0)
         {
           return response()->json(['success'=> false, 'error'=> 'You do not have any dogs. We do not know what you might like :('],422);
         }
